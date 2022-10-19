@@ -54,10 +54,10 @@ const MovieDetails = () => {
       <hr />
       <div className={s.info_block}>
         <p>Additional information</p>
-        <Link to={`cast`} state={{ from: location.state.from }}>
+        <Link to={`cast`} state={{ from: location.state?.from ?? '/' }}>
           Cast
         </Link>
-        <Link to={`reviews`} state={{ from: location.state.from }}>
+        <Link to={`reviews`} state={{ from: location.state?.from ?? '/' }}>
           Reviews
         </Link>
       </div>
