@@ -9,7 +9,7 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState({});
   const { movieId } = useParams();
   const location = useLocation();
-  console.log(location);
+
   const MovieDetailsApi = async () => {
     try {
       const { data } = await fetchApiMovieDetails(movieId);
