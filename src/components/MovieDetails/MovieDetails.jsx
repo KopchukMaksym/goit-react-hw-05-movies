@@ -9,7 +9,7 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState({});
   const { movieId } = useParams();
   const location = useLocation();
-
+  console.log(location);
   const MovieDetailsApi = async () => {
     try {
       const { data } = await fetchApiMovieDetails(movieId);
@@ -27,7 +27,7 @@ const MovieDetails = () => {
 
   return (
     <div>
-      <Link to={location.state.from}>
+      <Link to={location.state?.from ?? '/'}>
         <button className={s.btn_back} type="button">
           <IoIosArrowBack className={s.icon} />
           Go back
