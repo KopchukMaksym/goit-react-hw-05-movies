@@ -1,55 +1,43 @@
-import { useState, useEffect } from 'react';
-import { fetchApi } from 'api/fetchApi';
-import { Searchbar } from './Searchbar/Searchbar';
-import ImageGallery from './ImageGallery/ImageGallery';
-import Button from './Button/Button';
-import Loader from './Loader/Loader';
-import s from '../components/App.module.css';
+import NavMenu from './Navigation/Navigation';
+
+import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { FidgetSpinner } from 'react-loader-spinner';
+
+const Home = lazy(() => import('pages/Home/HomePages'));
+const MovieDetails = lazy(() => import('components/MovieDetails/MovieDetails'));
+const Movies = lazy(() => import('pages/Movies/MoviesPages'));
+const Cast = lazy(() => import('./MovieCast/MovieCast'));
+const Reviews = lazy(() => import('./MovieReviews/MovieReviews'));
 
 export const App = () => {
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!!query) {
-      getImagesFromApi();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, page]);
-
-  const getImagesFromApi = async () => {
-    setIsLoading(true);
-
-    try {
-      const { data: dataHits } = await fetchApi(query, page);
-      setData([...data, ...dataHits.hits]);
-    } catch (error) {
-      console.log('error', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const searchImg = search => {
-    if (search !== query) {
-      setData([]);
-      setQuery(search);
-      setPage(1);
-    }
-  };
-
-  const loadMore = () => {
-    setPage(page + 1);
-  };
-
   return (
-    <div className={s.app}>
-      <Searchbar onSubmit={searchImg} />
-      {!!data.length && <ImageGallery data={data} />}
-      {isLoading && <Loader />}
-      {!!data.length && <Button onClick={loadMore} />}
+    <div>
+      <NavMenu />
+      <Suspense
+        fallback={
+          <FidgetSpinner
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+            ballColors={['#ff0000', '#00ff00', '#0000ff']}
+            backgroundColor="#F4442E"
+          />
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
+          </Route>
+          <Route path="*" element={<div>NotFound</div>} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };

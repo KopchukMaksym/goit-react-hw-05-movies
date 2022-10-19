@@ -1,16 +1,43 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://pixabay.com/api/';
-const API_KEY = '28740529-a5c8b6a6d9e9b336b906aaf7a';
-export const fetchApi = (query, page) => {
-  return axios.get(`${BASE_URL}`, {
+const BASE_URL = 'https://api.themoviedb.org/3';
+const API_KEY = 'c63e4d3fe5eb4a31f62c83bce29dfebb';
+
+export const fetchApiTreding = () => {
+  return axios.get(`${BASE_URL}/trending/movie/week`, {
     params: {
-      q: query,
-      page: page,
-      key: API_KEY,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      per_page: 12,
+      api_key: API_KEY,
+    },
+  });
+};
+
+export const fetchApiMovieDetails = id => {
+  return axios.get(`${BASE_URL}/movie/${id}`, {
+    params: {
+      api_key: API_KEY,
+    },
+  });
+};
+
+export const fetchApiMovieCast = id => {
+  return axios.get(`${BASE_URL}/movie/${id}/credits`, {
+    params: {
+      api_key: API_KEY,
+    },
+  });
+};
+export const fetchApiMovieReviews = id => {
+  return axios.get(`${BASE_URL}/movie/${id}/reviews`, {
+    params: {
+      api_key: API_KEY,
+    },
+  });
+};
+export const fetchApiSearch = search => {
+  return axios.get(`${BASE_URL}/search/movie`, {
+    params: {
+      query: search,
+      api_key: API_KEY,
     },
   });
 };
