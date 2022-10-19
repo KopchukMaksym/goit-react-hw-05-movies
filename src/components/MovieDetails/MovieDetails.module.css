@@ -8,6 +8,9 @@
 }
 
 .btn_back {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
   background-color: azure;
   margin-bottom: 7px;
   border-radius: 3px;
